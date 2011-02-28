@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>parser.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>parser.py</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-0'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-0">#</a>
+        </div>
+        <p>Maps the first four digits of an contest ID to related
+descriptions and race types.</p>
+<p><em>Source: <a href="http://www.sos.ca.gov/media/10gg/election-night-data-feed-user-guide-v4.0.pdf">Election Night Date Feed User Guide</a>, p.71-73</em></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre><span class="n">CONTEST_TYPES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&#39;0200&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Governor&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0300&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Lieutenant Governor&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0400&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Secretary of State&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0500&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;State Controller&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0600&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;State Treasurer&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0700&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Attorney General&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0800&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Insurance Commissioner&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;0900&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Board of Equalization&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1000&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;U.S. Senate&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1100&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;U.S. Representative in Congress&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1200&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;State Senate&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1300&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;State Assembly&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1400&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Supreme Court Justices&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;measure&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1500&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Courts of Appeal Justices&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;measure&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1600&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Superintendent of Public Instruction&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;candidate&#39;</span><span class="p">},</span>
+    <span class="s">&#39;1900&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Ballot Measures&#39;</span><span class="p">,</span> <span class="s">&#39;type&#39;</span><span class="p">:</span> <span class="s">&#39;measure&#39;</span><span class="p">},</span>
+<span class="p">}</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-1'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-1">#</a>
+        </div>
+        <h3>Helper functions</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-2'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-2">#</a>
+        </div>
+        <p><a name="Handles"><em>Handles races with a number of candidates</em></a></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre><span class="k">def</span> <span class="nf">__process_candidate</span><span class="p">(</span><span class="n">contest_package</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle a contest with candidates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">contest</span> <span class="o">=</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&quot;contest&quot;</span><span class="p">]</span>
+    </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-3'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-3">#</a>
+        </div>
+        <p>Get precinct progress data</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="n">precinct_count</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;TotalVotes/CountMetric[@Id=&#39;PR&#39;]&quot;</span><span class="p">)</span>
+    <span class="n">precinct_total</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;TotalVotes/CountMetric[@Id=&#39;TP&#39;]&quot;</span><span class="p">)</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-4'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-4">#</a>
+        </div>
+        <p>Find all available candidates</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="n">selections</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;TotalVotes/Selection&#39;</span><span class="p">)</span>
+    <span class="n">choices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">total_votes</span> <span class="o">=</span> <span class="mi">0</span>
+    
+    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">selections</span><span class="p">:</span>
+        <span class="n">cid</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;Candidate/CandidateIdentifier&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Id&quot;</span><span class="p">)</span>
+        <span class="n">cname</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;Candidate/CandidateIdentifier/CandidateName&quot;</span><span class="p">)</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-5'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-5">#</a>
+        </div>
+        <p>Get candidate's party affiliation</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="n">cparty</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;Candidate/Affiliation/Type&quot;</span><span class="p">)</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-6'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-6">#</a>
+        </div>
+        <p>Get candidate's incumbency status</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;AffiliationIdentifier[@Id=&#39;Incumbent&#39;]&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">is_incumbent</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">is_incumbent</span> <span class="o">=</span> <span class="bp">False</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-7'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-7">#</a>
+        </div>
+        <p>Get candidate's vote count &amp; add to total votes</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="n">votes</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;ValidVotes&quot;</span><span class="p">)</span>
+        <span class="n">total_votes</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">votes</span><span class="p">)</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-8'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-8">#</a>
+        </div>
+        <p>Get candidate's percentage of vote in this contest</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="n">pv</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;CountMetric[@Id=&#39;PVR&#39;]&quot;</span><span class="p">)</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-9'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-9">#</a>
+        </div>
+        <p>Add <code>dict</code> of candidate data to list for this contest</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="n">choices</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="n">cid</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s">&#39;votes&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">votes</span><span class="p">),</span>
+                <span class="s">&#39;percent&#39;</span><span class="p">:</span> <span class="n">pv</span><span class="p">,</span>
+                <span class="s">&#39;is_incumbent&#39;</span><span class="p">:</span> <span class="n">is_incumbent</span><span class="p">,</span>
+                <span class="s">&#39;party&#39;</span><span class="p">:</span> <span class="n">cparty</span><span class="p">,</span>
+                <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">cname</span><span class="p">,</span>
+                <span class="p">}</span>
+        <span class="p">})</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;contest_name&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span>
+        <span class="s">&#39;contest_id&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span>
+        <span class="s">&#39;contest_description&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&quot;info_dict&quot;</span><span class="p">][</span><span class="s">&quot;description&quot;</span><span class="p">],</span>
+        <span class="s">&#39;contest_type&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&quot;info_dict&quot;</span><span class="p">][</span><span class="s">&quot;type&quot;</span><span class="p">],</span>
+        <span class="s">&#39;total_votes&#39;</span><span class="p">:</span> <span class="n">total_votes</span><span class="p">,</span>
+        <span class="s">&#39;choices&#39;</span><span class="p">:</span> <span class="n">choices</span><span class="p">,</span> <span class="c"># list of candidate `dict`&#39;s</span>
+        <span class="s">&#39;precincts_reporting&#39;</span><span class="p">:</span> <span class="n">precinct_count</span><span class="p">,</span>
+        <span class="s">&#39;total_precincts&#39;</span><span class="p">:</span> <span class="n">precinct_total</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">results</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-10'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-10">#</a>
+        </div>
+        <p><a name="Handles"><em>Handles races with yes/no options</em></a></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre><span class="k">def</span> <span class="nf">__process_measure</span><span class="p">(</span><span class="n">contest_package</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Handle a contest with yes/no options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">contest</span> <span class="o">=</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&quot;contest&quot;</span><span class="p">]</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-11'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-11">#</a>
+        </div>
+        <p>Get precinct progress data</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="n">precinct_count</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;TotalVotes/CountMetric[@Id=&#39;PR&#39;]&quot;</span><span class="p">)</span>
+    <span class="n">precinct_total</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;TotalVotes/CountMetric[@Id=&#39;TP&#39;]&quot;</span><span class="p">)</span>
+    </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-12'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-12">#</a>
+        </div>
+        <p>Get percentage of yes &amp; no votes in this contest</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="n">pyv</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&#39;TotalVotes/CountMetric[@Id=&quot;PYV&quot;]&#39;</span><span class="p">)</span>
+    <span class="n">pnv</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&#39;TotalVotes/CountMetric[@Id=&quot;PNV&quot;]&#39;</span><span class="p">)</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-13'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-13">#</a>
+        </div>
+        <p>Get all available responses (Should just be yes and no)</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="n">selections</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s">&#39;TotalVotes/Selection&#39;</span><span class="p">)</span>
+    
+    <span class="n">total_votes</span> <span class="o">=</span> <span class="mi">0</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-14'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-14">#</a>
+        </div>
+        <p><strong>TODO</strong>: Shouldn't loop &amp; manually check identifier. One or the other please.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>    <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">selections</span><span class="p">:</span>
+        <span class="n">cname</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&quot;Candidate/ProposalItem&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;ReferendumOptionIdentifier&quot;</span><span class="p">)</span>
+        <span class="n">votes</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&quot;ValidVotes&quot;</span><span class="p">)</span>
+        <span class="n">total_votes</span> <span class="o">+=</span> <span class="nb">int</span><span class="p">(</span><span class="n">votes</span><span class="p">)</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-15'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-15">#</a>
+        </div>
+        <p>Check option identifier and associate with vote percentages</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">if</span> <span class="n">cname</span> <span class="o">==</span> <span class="s">&quot;Yes&quot;</span><span class="p">:</span>
+            <span class="n">yes_percent</span> <span class="o">=</span> <span class="n">pyv</span>
+            <span class="n">yes_votes</span> <span class="o">=</span> <span class="n">votes</span>
+        <span class="k">elif</span> <span class="n">cname</span> <span class="o">==</span> <span class="s">&quot;No&quot;</span><span class="p">:</span>
+            <span class="n">no_percent</span> <span class="o">=</span> <span class="n">pnv</span>
+            <span class="n">no_votes</span> <span class="o">=</span> <span class="n">votes</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span>
+    
+    <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s">&#39;contest_name&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&#39;name&#39;</span><span class="p">],</span>
+        <span class="s">&#39;contest_id&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&#39;id&#39;</span><span class="p">],</span>
+        <span class="s">&#39;contest_description&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&quot;info_dict&quot;</span><span class="p">][</span><span class="s">&quot;description&quot;</span><span class="p">],</span>
+        <span class="s">&#39;contest_type&#39;</span><span class="p">:</span> <span class="n">contest_package</span><span class="p">[</span><span class="s">&quot;info_dict&quot;</span><span class="p">][</span><span class="s">&quot;type&quot;</span><span class="p">],</span>
+        <span class="s">&#39;total_votes&#39;</span><span class="p">:</span> <span class="n">total_votes</span><span class="p">,</span>
+        <span class="s">&#39;choices&#39;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">{</span><span class="s">&#39;yes&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;votes&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">yes_votes</span><span class="p">),</span> <span class="s">&#39;percent&#39;</span><span class="p">:</span> <span class="n">yes_percent</span><span class="p">}},</span>
+            <span class="p">{</span><span class="s">&#39;no&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;votes&#39;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">no_votes</span><span class="p">),</span> <span class="s">&#39;percent&#39;</span><span class="p">:</span> <span class="n">no_percent</span><span class="p">}}</span>
+        <span class="p">],</span>
+        <span class="s">&#39;precincts_reporting&#39;</span><span class="p">:</span> <span class="n">precinct_count</span><span class="p">,</span>
+        <span class="s">&#39;total_precincts&#39;</span><span class="p">:</span> <span class="n">precinct_total</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">results</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-16'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-16">#</a>
+        </div>
+        <h3>Processing the races</h3>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-17'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-17">#</a>
+        </div>
+        <p><a name="Performs"><em>Performs type detection on contests and passes them through appropriate helper function</em></a></p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre><span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="n">contests</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns list of dictionaries containing results for each contest</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">contest</span> <span class="ow">in</span> <span class="n">contests</span><span class="p">:</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-18'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-18">#</a>
+        </div>
+        <p>Extract the contest ID and compare against knwon types</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="n">contest_id</span> <span class="o">=</span> <span class="n">contest</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;ContestIdentifier&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&quot;Id&quot;</span><span class="p">,</span> <span class="s">&quot;Not defined&quot;</span><span class="p">)</span>
+        <span class="n">contest_type_dict</span> <span class="o">=</span> <span class="n">CONTEST_TYPES</span><span class="p">[</span><span class="n">contest_id</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]]</span>
+        
+        <span class="n">contest_type</span> <span class="o">=</span> <span class="n">contest_type_dict</span><span class="p">[</span><span class="s">&quot;type&quot;</span><span class="p">]</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-19'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-19">#</a>
+        </div>
+        <p>Package contest plus previously accessed data for helper functions</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="n">contest_package</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s">&#39;contest&#39;</span><span class="p">:</span> <span class="n">contest</span><span class="p">,</span>
+            <span class="s">&#39;id&#39;</span><span class="p">:</span> <span class="n">contest_id</span><span class="p">,</span>
+            <span class="s">&#39;info_dict&#39;</span><span class="p">:</span> <span class="n">contest_type_dict</span><span class="p">,</span>
+            <span class="s">&#39;name&#39;</span><span class="p">:</span> <span class="n">contest</span><span class="o">.</span><span class="n">findtext</span><span class="p">(</span><span class="s">&#39;ContestIdentifier/ContestName&#39;</span><span class="p">)}</span>
+        </pre></div></pre></div>
+      </td>
+    </tr><tr id='section-20'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-20">#</a>
+        </div>
+        <p>Hand off contest to helper function based on type</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>        <span class="k">if</span> <span class="n">contest_type</span> <span class="o">==</span> <span class="s">&quot;measure&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">__process_measure</span><span class="p">(</span><span class="n">contest_package</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="n">contest_type</span> <span class="o">==</span> <span class="s">&quot;candidate&quot;</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">__process_candidate</span><span class="p">(</span><span class="n">contest_package</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span></pre></div></pre></div>
+      </td>
+    </tr><tr id='section-21'>
+      <td class=docs>
+        <div class="octowrap">
+          <a class="octothorpe" href="#section-21">#</a>
+        </div>
+        <p>Fail loudly if an unknown type appears</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><div class="highlight"><pre>            <span class="k">raise</span>
+    <span class="k">return</span> <span class="n">results</span>
+    
+
+</pre></div></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
